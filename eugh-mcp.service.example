@@ -1,0 +1,33 @@
+[Unit]
+Description=Home server MCP server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=youruser
+WorkingDirectory=/home/youruser/mcp
+ExecStart=/home/youruser/mcp/venv/bin/python /home/youruser/mcp/eugh_mcp.py
+Restart=on-failure
+RestartSec=10
+
+# Whole OS read-only except the folders the tools work in
+ProtectSystem=strict
+ReadWritePaths=/home/youruser /var/www
+
+# Secrets the tools must never see, even through run_command
+# (leading '-' = ignore if the path doesn't exist)
+InaccessiblePaths=-/home/youruser/some-bot/.env
+InaccessiblePaths=-/var/www/example.com/.env
+InaccessiblePaths=-/etc/letsencrypt
+InaccessiblePaths=-/etc/nginx/sites-available/mcp.example.com
+InaccessiblePaths=-/etc/nginx/sites-enabled/mcp.example.com
+InaccessiblePaths=-/root
+
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target
