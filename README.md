@@ -50,6 +50,15 @@ Then put nginx in front of it (see the example), and add the HTTPS URL as a cust
 
 Edit `ALLOWED_ROOTS`, `EUGH` and `SCREEN_SESSION` at the top of `eugh_mcp.py` to match your machine.
 
+## Agent skills
+
+Two companion skills for using eugh-mcp safely are on Agensi:
+
+- [Home Server Ops for eugh-mcp](https://www.agensi.io/skills/home-server-ops-for-eugh-mcp): free workflow and safety rules.
+- [Home Server Ops Pro for eugh-mcp](https://www.agensi.io/skills/home-server-ops-pro-for-eugh-mcp): paid runbooks, hardening checklist and templates.
+
+eugh-mcp itself stays free and MIT-licensed.
+
 ## License
 
 [MIT](LICENSE)
