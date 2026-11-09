@@ -26,6 +26,17 @@ The tools are deliberately broad, so the safety lives **outside** the Python fil
 
 See [`eugh-mcp.service.example`](eugh-mcp.service.example) and [`nginx.example.conf`](nginx.example.conf).
 
+## Security warnings: read before you deploy
+
+This server gives an AI assistant broad control of a machine. Treat it like handing someone a shell.
+
+- **The secret URL path is the only authentication.** Anyone who learns it can use every tool. Use a long random path (32+ characters), never commit it, never paste it into chats, issues or screenshots, and rotate it if it might have leaked.
+- **`run_command` is protected by a deny-list, which is not a security boundary.** It blocks obviously destructive commands, but a determined or confused caller can work around it. Rely on the systemd sandbox, the unprivileged user and narrow sudoers rules, not on the deny-list.
+- **Keep sudoers rules minimal.** Allow only the exact `systemctl` actions on the exact units you need. Never grant blanket `NOPASSWD: ALL`.
+- **Keep `ALLOWED_ROOTS` small** and make sure secrets (`.env` files, keys, tokens) sit outside them or under `InaccessiblePaths=`.
+- **Prompt injection is a real risk.** Logs, files and web content the assistant reads can contain instructions. Review what the assistant plans to run, especially restarts, file writes and console commands, before approving.
+- **Use at your own risk.** There is no warranty (see [LICENSE](LICENSE)). Test on a non-critical machine first and keep backups.
+
 ## Setup
 
 ```bash
@@ -38,3 +49,7 @@ sudo systemctl enable --now eugh-mcp
 Then put nginx in front of it (see the example), and add the HTTPS URL as a custom connector in Claude.
 
 Edit `ALLOWED_ROOTS`, `EUGH` and `SCREEN_SESSION` at the top of `eugh_mcp.py` to match your machine.
+
+## License
+
+[MIT](LICENSE)
